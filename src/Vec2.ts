@@ -1,51 +1,69 @@
-import { Mat3 } from "./Mat3";
+import { type Vec } from "./Vec";
+import { type Mat3 } from "./Mat3";
+import { type Mat4 } from "./Mat4";
 
-export class Vector {
+
+type Vec2Obj = {x: number, y: number};
+type Vec2Arr = [number, number];
+
+export class Vec2 implements Vec<Vec2, Vec2Obj, Vec2Arr, Mat3> {
+    static readonly WIDTH = 2;
+
+    static fromArray(arr: Readonly<Vec2Arr>): Vec2 {
+        return new Vec2(arr[0], arr[1]);
+    }
+
+    static fromObject(obj: Readonly<Vec2Obj>): Vec2 {
+        return new Vec2(obj.x, obj.y);
+    }
+
     x: number;
     y: number;
+
+    get width() {return Vec2.WIDTH}
 
     constructor(x: number = 0, y: number = 0){
         this.x = x;
         this.y = y;
     }
 
-    add(vec: Readonly<Vector>): Vector {
+    add(vec: Readonly<Vec2>): Vec2 {
         this.x += vec.x;
         this.y += vec.y;
         return this;
     }
 
-    addScalar(scalar: number): Vector {
+    addScalar(scalar: number): Vec2 {
         this.x += scalar;
         this.y += scalar;
         return this;
     }
 
-    subtract(vec: Readonly<Vector>): Vector {
+    subtract(vec: Readonly<Vec2>): Vec2 {
         this.x -= vec.x;
         this.y -= vec.y;
         return this;
     }
 
-    subtractScalar(scalar: number): Vector {
+    subtractScalar(scalar: number): Vec2 {
         this.x -= scalar;
         this.y -= scalar;
         return this;
     }
 
-    multiply(vec: Readonly<Vector>): Vector {
+    multiply(vec: Readonly<Vec2>): Vec2 {
         this.x *= vec.x;
         this.y *= vec.y;
         return this;
     }
 
-    scale(scalar: number): Vector {
+    scale(scalar: number): Vec2 {
         this.x *= scalar;
         this.y *= scalar;
         return this;
     }
 
-    multiplyMat3(mat: Mat3): Vector {
+    multiplyMat3(mat: Readonly<Mat3>): Vec2 {
         const x = this.x;
         const y = this.y;
 
@@ -55,137 +73,138 @@ export class Vector {
         return this;
     }
 
-    multiplyScalar(scalar: number): Vector {
+    multiplyMat4(mat: Readonly<Mat4>): Vec2 {
+        const x = this.x;
+        const y = this.y;
+
+        this.x = x * mat.data[0] + y * mat.data[4] + mat.data[8] + mat.data[12];
+        this.y = x * mat.data[1] + y * mat.data[5] + mat.data[9] + mat.data[13];
+
+        return this;
+    }
+
+    multiplyScalar(scalar: number): Vec2 {
         return this.scale(scalar);
     }
 
-    divide(vec: Readonly<Vector>): Vector {
+    divide(vec: Readonly<Vec2>): Vec2 {
         this.x /= vec.x;
         this.y /= vec.y;
         return this;
     }
 
-    divideScalar(scalar: number): Vector {
+    divideScalar(scalar: number): Vec2 {
         this.x /= scalar;
         this.y /= scalar;
         return this;
     }
 
-    dot(vec: Readonly<Vector>): number {
+    dot(vec: Readonly<Vec2>): number {
         return this.x * vec.x + this.y * vec.y;
     }
 
-    cross(vec: Readonly<Vector>): number {
+    cross(vec: Readonly<Vec2>): number {
         return this.x * vec.y - this.y * vec.x;
-    }
-
-    magnitude(): number {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    }
-
-    length(): number {
-        return this.magnitude();
     }
 
     lengthNoSqrt(): number {
         return this.x * this.x + this.y * this.y;
     }
 
-    normalize(): Vector {
-        const magnitude = this.magnitude();
-        if (magnitude == 0) return this;
-        return this.scale(1/magnitude);
+    length(): number {
+        return Math.sqrt(this.lengthNoSqrt());
     }
 
-    copy(vec: { x: number, y: number }): Vector {
+    magnitude(): number {
+        return this.length();
+    }
+
+    normalize(): Vec2 {
+        const length = this.length();
+        if (length == 0) return this;
+        return this.scale(1/length);
+    }
+
+    copy(vec: Readonly<Vec2Obj>): Vec2 {
         this.x = vec.x;
         this.y = vec.y;
         return this;
     }
 
-    set(x: number, y: number): Vector {
+    set(x: number, y: number): Vec2 {
         this.x = x;
         this.y = y;
         return this;
     }
 
-    clone(): Vector {
-        return new Vector(this.x, this.y);
+    clone(): Vec2 {
+        return new Vec2(this.x, this.y);
     }
 
-    static fromArray(arr: readonly [number, number]): Vector {
-        return new Vector().fromArray(arr);
-    }
-
-    fromArray(arr: readonly [number, number]): Vector {
+    fromArray(arr: Readonly<Vec2Arr>): Vec2 {
         this.x = arr[0] ?? 0;
         this.y = arr[1] ?? 0;
         return this;
     }
 
-    toArray(): [number, number] {
+    toArray(): Vec2Arr {
         return [this.x, this.y];
     }
 
-    static fromObject(obj: {x: number, y: number}): Vector {
-        return new Vector().fromObject(obj);
-    }
-
-    fromObject(obj: {x: number, y: number}): Vector {
+    fromObject(obj: Readonly<Vec2Obj>): Vec2 {
         this.x = obj.x;
         this.y = obj.y;
         return this;
     }
 
-    toObject(): {x: number, y: number} {
+    toObject(): Vec2Obj {
         return {x: this.x, y: this.y};
     }
 
-    floor(): Vector {
+    floor(): Vec2 {
         this.x = Math.floor(this.x);
         this.y = Math.floor(this.y);
         return this;
     }
 
-    ceil(): Vector {
+    ceil(): Vec2 {
         this.x = Math.ceil(this.x);
         this.y = Math.ceil(this.y);
         return this;
     }
 
-    round(): Vector {
+    round(): Vec2 {
         this.x = Math.round(this.x);
         this.y = Math.round(this.y);
         return this;
     }
 
-    absolute(): Vector {
+    absolute(): Vec2 {
         this.x = Math.abs(this.x);
         this.y = Math.abs(this.y);
-
         return this;
     }
 
-    equalTo(vec: Readonly<Vector>): boolean {
+    equalTo(vec: Readonly<Vec2>): boolean {
         return (
             this.x == vec.x &&
             this.y == vec.y
         );
     }
 
-    distanceTo(vec: Readonly<Vector>): number {
+    distanceTo(vec: Readonly<Vec2>): number {
         const dx = this.x - vec.x;
         const dy = this.y - vec.y;
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    distanceNoSqrt(vec: Readonly<Vector>): number {
+    distanceNoSqrt(vec: Readonly<Vec2>): number {
         const dx = this.x - vec.x;
         const dy = this.y - vec.y;
         return dx * dx + dy * dy;
     }
 
-    randomize(lb: Readonly<Vector>, ub: Readonly<Vector>): Vector {
+    randomize(lb: Readonly<Vec2>, ub: Readonly<Vec2>): Vec2 {
         const dx = ub.x - lb.x;
         const dy = ub.y - lb.y;
         this.x = Math.random() * dx + lb.x;
@@ -193,12 +212,12 @@ export class Vector {
         return this;
     }
 
-    zero(): Vector {
+    zero(): Vec2 {
         this.x = this.y = 0;
         return this;
     }
 
-    clampLength(maxLength: number): Vector {
+    clampLength(maxLength: number): Vec2 {
         const curLength = this.length();
         const scaleFac = maxLength / curLength;
 
@@ -210,11 +229,12 @@ export class Vector {
         return this;
     }
 
-    reverse(): Vector {
-        this.x ^= this.y;
-        this.y ^= this.x;
-        this.x ^= this.y;
-        
+    edit(callback: (vec: Vec2) => void): Vec2 {
+        callback(this);
         return this;
+    }
+
+    map<T>(callback: (x: number, y: number) => T): T {
+        return callback(this.x, this.y);
     }
 }
