@@ -4,6 +4,8 @@ export interface Mat<MatT, DataT> {
 
     safeSet(data: Readonly<Array<number>>): MatT;
     set(data: Readonly<DataT>): MatT;
+    add(mat: Readonly<MatT>): MatT;
+    subtract(mat: Readonly<MatT>): MatT;
     multiply(mat: Readonly<MatT>): MatT;
     determinant(): number;
     inverse(): MatT;

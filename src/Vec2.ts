@@ -1,6 +1,6 @@
-import { type Vec } from "./Vec";
-import { type Mat3 } from "./Mat3";
-import { type Mat4 } from "./Mat4";
+import { type Vec } from "./Vec.ts";
+import { type Mat3 } from "./Mat3.ts";
+import { type Mat4 } from "./Mat4.ts";
 
 
 type Vec2Obj = {x: number, y: number};

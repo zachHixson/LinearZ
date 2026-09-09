@@ -1,4 +1,4 @@
-import { type Mat } from "./Mat";
+import { type Mat } from "./Mat.ts";
 
 type Mat3Data = [
     number, number, number,
@@ -49,6 +49,32 @@ export class Mat3 implements Mat<Mat3, Mat3Data> {
         this._data[6] = data[6];
         this._data[7] = data[7];
         this._data[8] = data[8];
+        return this;
+    }
+
+    add(mat: Readonly<Mat3>): Mat3 {
+        this._data[0] += mat.data[0];
+        this._data[1] += mat.data[1];
+        this._data[2] += mat.data[2];
+        this._data[3] += mat.data[3];
+        this._data[4] += mat.data[4];
+        this._data[5] += mat.data[5];
+        this._data[6] += mat.data[6];
+        this._data[7] += mat.data[7];
+        this._data[8] += mat.data[8];
+        return this;
+    }
+
+    subtract(mat: Readonly<Mat3>): Mat3 {
+        this._data[0] -= mat.data[0];
+        this._data[1] -= mat.data[1];
+        this._data[2] -= mat.data[2];
+        this._data[3] -= mat.data[3];
+        this._data[4] -= mat.data[4];
+        this._data[5] -= mat.data[5];
+        this._data[6] -= mat.data[6];
+        this._data[7] -= mat.data[7];
+        this._data[8] -= mat.data[8];
         return this;
     }
 
