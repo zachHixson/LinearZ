@@ -1,6 +1,6 @@
-import { type Vec } from "./Vec.ts";
-import { type Mat3 } from "./Mat3.ts";
-import { type Mat4 } from "./Mat4.ts";
+import { type Vec } from "./Vec.js";
+import { type Mat3 } from "./Mat3.js";
+import { type Mat4 } from "./Mat4.js";
 
 type Vec3Obj = {x: number, y: number, z: number};
 type Vec3Arr = [number, number, number];

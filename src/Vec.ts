@@ -1,5 +1,5 @@
-import { type Mat3 } from "./Mat3";
-import { type Mat4 } from "./Mat4";
+import { type Mat3 } from "./Mat3.js";
+import { type Mat4 } from "./Mat4.js";
 
 export interface Vec<VecT, ObjT, ArrT, MatT> {
     get width(): number;

@@ -1,7 +1,7 @@
 import { fileURLToPath } from "url";
-import { createTester, EQUAL, NOT_EQUAL, EXPECT_THROW } from "./Testing.ts";
-import { MAT_EQUAL } from "./Mat_helpers.ts";
-import { Mat3 } from "../src/Mat3.ts";
+import { createTester, EQUAL, NOT_EQUAL, EXPECT_THROW } from "./Testing.js";
+import { MAT_EQUAL } from "../test/Mat_helpers.js";
+import { Mat3 } from "../src/Mat3.js";
 
 const { TEST, RUN } = createTester("Mat3 Tests");
 

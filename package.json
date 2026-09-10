@@ -19,9 +19,15 @@
   "license": "MIT",
   "author": "Zach Hixson",
   "type": "module",
-  "main": "src/main.ts",
+  "main": "dist/index.js",
+
+  "files": [
+      "dist/src"
+  ],
   "scripts": {
-    "test": "tsx test/All_Tests.ts"
+    "test": "tsx test/All_Tests.ts",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^22.20.2",

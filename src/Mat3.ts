@@ -1,4 +1,4 @@
-import { type Mat } from "./Mat.ts";
+import { type Mat } from "./Mat.js";
 
 type Mat3Data = [
     number, number, number,
