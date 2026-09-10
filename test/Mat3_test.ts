@@ -1,3 +1,4 @@
+import { fileURLToPath } from "url";
 import { createTester, EQUAL, NOT_EQUAL, EXPECT_THROW } from "./Testing.ts";
 import { MAT_EQUAL } from "./Mat_helpers.ts";
 import { Mat3 } from "../src/Mat3.ts";
@@ -143,10 +144,19 @@ TEST("determinant()", ()=>{
     EQUAL(det, -112);
 });
 
+TEST("transpose()", ()=>{
+    const mat = new Mat3([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    const xpos = mat.transpose();
+    EQUAL(mat, xpos);
+    MAT_EQUAL(mat.data, xpos.data);
+    MAT_EQUAL(xpos.data, [1, 4, 7, 2, 5, 8, 3, 6, 9]);
+});
+
 TEST("inverse() Zero Determinant", ()=>{
     const mat = new Mat3([1, 2, 3, 4, 5, 6, 7, 8, 9]);
     EXPECT_THROW(()=>{
         const inv = mat.inverse();
+        console.log("This should not print", inv);
     });
 });
 
@@ -156,14 +166,6 @@ TEST("inverse()", ()=>{
     EQUAL(mat, inverse);
     MAT_EQUAL(mat.data, inverse.data);
     MAT_EQUAL(inverse.data, [0.2, 0.2, 0, -0.2, 0.3, 1, 0.2, -0.3, 0]);
-});
-
-TEST("transpose()", ()=>{
-    const mat = new Mat3([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-    const xpos = mat.transpose();
-    EQUAL(mat, xpos);
-    MAT_EQUAL(mat.data, xpos.data);
-    MAT_EQUAL(xpos.data, [1, 4, 7, 2, 5, 8, 3, 6, 9]);
 });
 
 TEST("copy()", ()=>{
@@ -191,4 +193,8 @@ TEST("clone()", ()=>{
     MAT_EQUAL(clone.data, arr1);
 });
 
-RUN();
+if (fileURLToPath(import.meta.url) == process.argv[1]) {
+    RUN();
+}
+
+export default RUN;

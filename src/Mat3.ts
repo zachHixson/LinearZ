@@ -16,7 +16,7 @@ export class Mat3 implements Mat<Mat3, Mat3Data> {
         0, 0, 1,
     ];
 
-    constructor(data?: Array<number>){
+    constructor(data?: Readonly<Array<number>>){
         if (!data) return;
         if (data.length == this._data.length) {
             this.set(data as Mat3Data);
@@ -115,6 +115,24 @@ export class Mat3 implements Mat<Mat3, Mat3Data> {
         );
     }
 
+    transpose(): Mat3 {
+        let swap;
+
+        swap = this._data[1];
+        this._data[1] = this._data[3];
+        this._data[3] = swap;
+
+        swap = this._data[2];
+        this._data[2] = this._data[6];
+        this._data[6] = swap;
+
+        swap = this._data[5];
+        this._data[5] = this._data[7];
+        this._data[7] = swap;
+
+        return this;
+    }
+
     inverse(): Mat3 {
         //calculate determinants using "matrix of minors" and apply "checkeerboard" +/-
         const data0 = this._data[0];
@@ -148,43 +166,18 @@ export class Mat3 implements Mat<Mat3, Mat3Data> {
 
         //transpose matrix and multiply all elements by inverse of the determinant
         const invDet = 1 / det;
-        let swap;
 
         this._data[0] *= invDet;
+        this._data[1] *= invDet;
+        this._data[2] *= invDet;
+        this._data[3] *= invDet;
         this._data[4] *= invDet;
+        this._data[5] *= invDet;
+        this._data[6] *= invDet;
+        this._data[7] *= invDet;
         this._data[8] *= invDet;
 
-        swap = this._data[1];
-        this._data[1] = this._data[3] * invDet;
-        this._data[3] = swap * invDet;
-
-        swap = this._data[2];
-        this._data[2] = this._data[6] * invDet;
-        this._data[6] = swap * invDet;
-
-        swap = this._data[5];
-        this._data[5] = this._data[7] * invDet;
-        this._data[7] = swap * invDet;
-
-        return this;
-    }
-
-    transpose(): Mat3 {
-        let swap;
-
-        swap = this._data[1];
-        this._data[1] = this._data[3];
-        this._data[3] = swap;
-
-        swap = this._data[2];
-        this._data[2] = this._data[6];
-        this._data[6] = swap;
-
-        swap = this._data[5];
-        this._data[5] = this._data[7];
-        this._data[7] = swap;
-
-        return this;
+        return this.transpose();
     }
 
     copy(mat: Readonly<Mat3>): Mat3 {

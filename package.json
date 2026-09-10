@@ -1,0 +1,31 @@
+{
+  "name": "linearz",
+  "version": "1.0.0",
+  "description": "A simple, fast, Vector and Matrix library",
+  "keywords": [
+    "linear",
+    "algebra",
+    "vector",
+    "matrix",
+    "2d",
+    "3d",
+    "4d",
+    "vec2",
+    "vec3",
+    "vec4",
+    "mat3",
+    "mat4"
+  ],
+  "license": "MIT",
+  "author": "Zach Hixson",
+  "type": "module",
+  "main": "src/main.ts",
+  "scripts": {
+    "test": "tsx test/All_Tests.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.2",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}

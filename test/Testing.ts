@@ -42,6 +42,16 @@ export function createTester(name: string): {TEST: (name: Test[0], test: Test[1]
     };
 }
 
+export function runBatch(arr: Array<()=>boolean>): boolean {
+    for (let i = 0; i < arr.length; i++) {
+        const res = arr[i]();
+        if (!res) return false;
+    }
+
+    console.log('=== All Tests Have Completed ===');
+    return true;
+}
+
 export function EQUAL<T>(a: T, b: T): void {
     if (a != b) {
         throw new Error(`Values not equal.\n\tValues: a = ${a}, b = ${b}`);

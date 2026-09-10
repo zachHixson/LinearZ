@@ -18,7 +18,7 @@ export class Mat4 implements Mat<Mat4, Mat4Data> {
         0, 0, 0, 1,
     ];
 
-    constructor(data?: Array<number>){
+    constructor(data?: Readonly<Array<number>>){
         if (!data) return;
         if (data.length == this._data.length) {
             this.set(data as Mat4Data);
@@ -178,7 +178,43 @@ export class Mat4 implements Mat<Mat4, Mat4Data> {
         );
     }
 
+    transpose(): Mat4 {
+        let swap;
+
+        swap = this._data[1];
+        this._data[1] = this._data[4];
+        this._data[4] = swap;
+
+        swap = this._data[2];
+        this._data[2] = this._data[8];
+        this._data[8] = swap;
+
+        swap = this._data[3];
+        this._data[3] = this._data[12];
+        this._data[12] = swap;
+
+        swap = this._data[6];
+        this._data[6] = this._data[9];
+        this._data[9] = swap;
+
+        swap = this._data[7];
+        this._data[7] = this._data[13];
+        this._data[13] = swap;
+
+        swap = this._data[11];
+        this._data[11] = this._data[14];
+        this._data[14] = swap;
+
+        return this;
+    }
+
     inverse(): Mat4 {
+        const det = this.determinant();
+
+        if (det == 0){
+            throw new Error("Cannot get inverse of matrix if determinant is 0");
+        }
+
         //calculate determinants using "matrix of minors" and apply "checkeerboard" +/-
         const data00 = this._data[0];
         const data01 = this._data[1];
@@ -208,22 +244,14 @@ export class Mat4 implements Mat<Mat4, Mat4Data> {
         const det6_11_7_10 = data06 * data11 - data07 * data10;
         const det5_10_6_9 = data05 * data10 - data06 * data09;
         const det4_10_6_8 = data04 * data10 - data06 * data08;
+        const det5_11_7_9 = data05 * data11 - data07 * data09;
+        const det4_11_7_8 = data04 * data11 - data07 * data08;
+        const det4_9_5_8 = data04 * data09 - data05 * data08;
 
-        const det0 = (data05 * det10_15_11_14 - data06 * det9_15_11_13 + data07 * det9_14_10_13);
-        const det1 = (data04 * det10_15_11_14 - data06 * det8_15_11_12 + data07 * det8_14_10_12);
-        const det2 = (data04 * det9_15_11_13 - data05 * det8_15_11_12 + data07 * det8_14_10_12);
-        const det3 = (data04 * det9_14_10_13 - data05 * det8_14_10_12 + data06 * det8_13_9_12);
-
-        const det = det0 - det1 + det2 - det3;
-
-        if (det == 0){
-            throw new Error("Cannot get inverse of matrix if determinant is 0");
-        }
-
-        this._data[0] = det0;
-        this._data[1] = -det1;
-        this._data[2] = det2;
-        this._data[3] = -det3;
+        this._data[0] = (data05 * det10_15_11_14 - data06 * det9_15_11_13 + data07 * det9_14_10_13);
+        this._data[1] = -(data04 * det10_15_11_14 - data06 * det8_15_11_12 + data07 * det8_14_10_12);
+        this._data[2] = (data04 * det9_15_11_13 - data05 * det8_15_11_12 + data07 * det8_13_9_12);
+        this._data[3] = -(data04 * det9_14_10_13 - data05 * det8_14_10_12 + data06 * det8_13_9_12);
 
         this._data[4] = -(data01 * det10_15_11_14 - data02 * det9_15_11_13 + data03 * det9_14_10_13);
         this._data[5] = (data00 * det10_15_11_14 - data02 * det8_15_11_12 + data03 * det8_14_10_12);
@@ -235,75 +263,32 @@ export class Mat4 implements Mat<Mat4, Mat4Data> {
         this._data[10] = (data00 * det5_15_7_13 - data01 * det4_15_7_12 + data03 * det4_13_5_12);
         this._data[11] = -(data00 * det5_14_6_13 - data01 * det4_14_6_12 + data02 * det4_13_5_12);
 
-        this._data[12] = -(data01 * det6_11_7_10 - data02 * (data05 * data11 - data07 * data09) + data03 * (det5_10_6_9));
-        this._data[13] = (data00 * det6_11_7_10 - data02 * (data04 * data11 - data07 * data08) + data03 * (det4_10_6_8));
-        this._data[14] = -(data00 * det5_15_7_13 - data01 * det4_15_7_12 + data03 * det4_13_5_12);
-        this._data[15] = (data00 * det5_10_6_9 - data01 * det4_10_6_8 + data02 * (data04 * data09 - data05 * data08));
+        this._data[12] = -(data01 * det6_11_7_10 - data02 * det5_11_7_9 + data03 * (det5_10_6_9));
+        this._data[13] = (data00 * det6_11_7_10 - data02 * det4_11_7_8 + data03 * (det4_10_6_8));
+        this._data[14] = -(data00 * det5_11_7_9 - data01 * det4_11_7_8 + data03 * det4_9_5_8);
+        this._data[15] = (data00 * det5_10_6_9 - data01 * det4_10_6_8 + data02 * det4_9_5_8);
 
         //transpose matrix and multiply all elements by inverse of the determinant
         const invDet = 1 / det;
-        let swap;
 
         this._data[0] *= invDet;
+        this._data[1] *= invDet;
+        this._data[2] *= invDet;
+        this._data[3] *= invDet;
+        this._data[4] *= invDet;
         this._data[5] *= invDet;
+        this._data[6] *= invDet;
+        this._data[7] *= invDet;
+        this._data[8] *= invDet;
+        this._data[9] *= invDet;
         this._data[10] *= invDet;
+        this._data[11] *= invDet;
+        this._data[12] *= invDet;
+        this._data[13] *= invDet;
+        this._data[14] *= invDet;
         this._data[15] *= invDet;
 
-        swap = this._data[1];
-        this._data[1] = this._data[4] * invDet;
-        this._data[4] = swap * invDet;
-
-        swap = this._data[2];
-        this._data[2] = this._data[8] * invDet;
-        this._data[8] = this._data[2] * invDet;
-
-        swap = this._data[3];
-        this._data[3] = this._data[12] * invDet;
-        this._data[12] = swap * invDet;
-
-        swap = this._data[6];
-        this._data[6] = this._data[9] * invDet;
-        this._data[9] = swap * invDet;
-
-        swap = this._data[7];
-        this._data[7] = this._data[13] * invDet;
-        this._data[13] = swap * invDet;
-
-        swap = this._data[11];
-        this._data[11] = this._data[14] * invDet;
-        this._data[14] = swap * invDet;
-
-        return this;
-    }
-
-    transpose(): Mat4 {
-        let swap;
-
-        swap = this._data[1];
-        this._data[1] = this._data[4];
-        this._data[4] = swap;
-
-        swap = this._data[2];
-        this._data[2] = this._data[8];
-        this._data[8] = this._data[2];
-
-        swap = this._data[3];
-        this._data[3] = this._data[12];
-        this._data[12] = swap;
-
-        swap = this._data[6];
-        this._data[6] = this._data[9];
-        this._data[9] = swap;
-
-        swap = this._data[7];
-        this._data[7] = this._data[13];
-        this._data[13] = swap;
-
-        swap = this._data[11];
-        this._data[11] = this._data[14];
-        this._data[14] = swap;
-
-        return this;
+        return this.transpose();
     }
 
     copy(mat: Mat4): Mat4 {

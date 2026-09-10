@@ -8,8 +8,8 @@ export interface Mat<MatT, DataT> {
     subtract(mat: Readonly<MatT>): MatT;
     multiply(mat: Readonly<MatT>): MatT;
     determinant(): number;
-    inverse(): MatT;
     transpose(): MatT;
+    inverse(): MatT;
     copy(mat: Readonly<MatT>): MatT;
     clone(): MatT;
 }
