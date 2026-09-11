@@ -78,14 +78,17 @@ export class Vec4 implements Vec<Vec4, Vec4Obj, Vec4Arr, Mat3>{
         return this;
     }
 
+    multiplyScalar(scalar: number): Vec4 {
+        return this.scale(scalar);
+    }
+
     multiplyMat3(mat: Readonly<Mat3>): Vec4 {
         const x = this.x;
         const y = this.y;
-        const z = this.z;
 
-        this.x = x * mat.data[0] + y * mat.data[3] + z * mat.data[6];
-        this.y = x * mat.data[1] + y * mat.data[4] + z * mat.data[7];
-        this.z = x * mat.data[2] + y * mat.data[5] + z * mat.data[8];
+        this.x = x * mat.data[0] + y * mat.data[3] + this.z * mat.data[6];
+        this.y = x * mat.data[1] + y * mat.data[4] + this.z * mat.data[7];
+        this.z = x * mat.data[2] + y * mat.data[5] + this.z * mat.data[8];
 
         return this;
     }
@@ -94,18 +97,13 @@ export class Vec4 implements Vec<Vec4, Vec4Obj, Vec4Arr, Mat3>{
         const x = this.x;
         const y = this.y;
         const z = this.z;
-        const w = this.w;
 
-        this.x = x * mat.data[0] + y * mat.data[4] + z * mat.data[8] + w * mat.data[12];
-        this.x = x * mat.data[1] + y * mat.data[5] + z * mat.data[9] + w * mat.data[13];
-        this.x = x * mat.data[2] + y * mat.data[6] + z * mat.data[10] + w * mat.data[14];
-        this.x = x * mat.data[3] + y * mat.data[7] + z * mat.data[11] + w * mat.data[15];
+        this.x = x * mat.data[0] + y * mat.data[4] + z * mat.data[8] + this.w * mat.data[12];
+        this.y = x * mat.data[1] + y * mat.data[5] + z * mat.data[9] + this.w * mat.data[13];
+        this.z = x * mat.data[2] + y * mat.data[6] + z * mat.data[10] + this.w * mat.data[14];
+        this.w = x * mat.data[3] + y * mat.data[7] + z * mat.data[11] + this.w * mat.data[15];
 
         return this;
-    }
-
-    multiplyScalar(scalar: number): Vec4 {
-        return this.scale(scalar);
     }
 
     divide(vec: Readonly<Vec4>): Vec4 {
@@ -126,15 +124,6 @@ export class Vec4 implements Vec<Vec4, Vec4Obj, Vec4Arr, Mat3>{
 
     dot(vec: Readonly<Vec4>): number {
         return this.x * vec.x + this.y * vec.y + this.z * vec.z + this.w * vec.w;
-    }
-
-    cross(vec: Readonly<Vec4>): Vec4 {
-        return new Vec4(
-            this.y * vec.z - this.z * vec.y,
-            this.z * vec.w - this.x * vec.w,
-            this.w * vec.x - this.y * vec.x,
-            this.x * vec.y - this.z * vec.y
-        );
     }
 
     lengthNoSqrt(): number {
@@ -245,14 +234,6 @@ export class Vec4 implements Vec<Vec4, Vec4Obj, Vec4Arr, Mat3>{
         );
     }
 
-    distanceTo(vec: Readonly<Vec4>): number {
-        const dx = this.x - vec.x;
-        const dy = this.y - vec.y;
-        const dz = this.z - vec.z;
-        const dw = this.w - vec.w;
-        return Math.sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
-    }
-
     distanceNoSqrt(vec: Readonly<Vec4>): number {
         const dx = this.x - vec.x;
         const dy = this.y - vec.y;
@@ -261,15 +242,27 @@ export class Vec4 implements Vec<Vec4, Vec4Obj, Vec4Arr, Mat3>{
         return dx * dx + dy * dy + dz * dz + dw * dw;
     }
 
+    distanceTo(vec: Readonly<Vec4>): number {
+        return Math.sqrt(this.distanceNoSqrt(vec));
+    }
+
     randomize(lb: Readonly<Vec4>, ub: Readonly<Vec4>): Vec4 {
-        const dx = ub.x - lb.x;
-        const dy = ub.y - lb.y;
-        const dz = ub.z - lb.z;
-        const dw = ub.w - lb.w;
-        this.x = Math.random() * dx + lb.x;
-        this.y = Math.random() * dy + lb.y;
-        this.z = Math.random() * dz + lb.z;
-        this.w = Math.random() * dw + lb.w;
+        const lbx = Math.min(lb.x, ub.x);
+        const lby = Math.min(lb.y, ub.y);
+        const lbz = Math.min(lb.z, ub.z);
+        const lbw = Math.min(lb.w, ub.w);
+        const ubx = Math.max(lb.x, ub.x);
+        const uby = Math.max(lb.y, ub.y);
+        const ubz = Math.max(lb.z, ub.z);
+        const ubw = Math.max(lb.w, ub.w);
+        const dx = ubx - lbx;
+        const dy = uby - lby;
+        const dz = ubz - lbz;
+        const dw = ubw - lbw;
+        this.x = Math.random() * dx + lbx;
+        this.y = Math.random() * dy + lby;
+        this.z = Math.random() * dz + lbz;
+        this.w = Math.random() * dw + lbw;
         return this;
     }
 
@@ -297,7 +290,7 @@ export class Vec4 implements Vec<Vec4, Vec4Obj, Vec4Arr, Mat3>{
         return this;
     }
 
-    map<T>(callback: (x: number, y: number, z: number, w: number) => T): T {
-        return callback(this.x, this.y, this.z, this.w);
+    map<T>(callback: (vec: Readonly<Vec4>) => T): T {
+        return callback(this);
     }
 }

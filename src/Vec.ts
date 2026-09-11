@@ -9,13 +9,12 @@ export interface Vec<VecT, ObjT, ArrT, MatT> {
     subtract(vec: Readonly<VecT>): VecT;
     multiply(vec: Readonly<VecT>): VecT;
     scale(scalar: number): VecT;
+    multiplyScalar(scalar: number): VecT;
     multiplyMat3(mat: Readonly<Mat3>): VecT;
     multiplyMat4(mat: Readonly<Mat4>): VecT;
-    multiplyScalar(scalar: number): VecT;
     divide(vec: Readonly<VecT>): VecT;
     divideScalar(scalar: number): VecT;
     dot(vec: Readonly<VecT>): number;
-    cross(vec: Readonly<VecT>): VecT | number;
     lengthNoSqrt(): number;
     magnitude(): number;
     normalize(): VecT;
@@ -36,5 +35,5 @@ export interface Vec<VecT, ObjT, ArrT, MatT> {
     zero(): VecT;
     clampLength(maxLength: number): VecT;
     edit(callback: (vec: VecT) => void): VecT;
-    map<T>(callback: (...args: unknown[]) => T): T;
+    map<T>(callback: (vec: Readonly<VecT>) => T): T;
 }

@@ -70,14 +70,17 @@ export class Vec3 implements Vec<Vec3, Vec3Obj, Vec3Arr, Mat3>{
         return this;
     }
 
+    multiplyScalar(scalar: number): Vec3 {
+        return this.scale(scalar);
+    }
+
     multiplyMat3(mat: Readonly<Mat3>): Vec3 {
         const x = this.x;
         const y = this.y;
-        const z = this.z;
 
-        this.x = x * mat.data[0] + y * mat.data[3] + z * mat.data[6];
-        this.y = x * mat.data[1] + y * mat.data[4] + z * mat.data[7];
-        this.z = x * mat.data[2] + y * mat.data[5] + z * mat.data[8];
+        this.x = x * mat.data[0] + y * mat.data[3] + this.z * mat.data[6];
+        this.y = x * mat.data[1] + y * mat.data[4] + this.z * mat.data[7];
+        this.z = x * mat.data[2] + y * mat.data[5] + this.z * mat.data[8];
 
         return this;
     }
@@ -85,17 +88,12 @@ export class Vec3 implements Vec<Vec3, Vec3Obj, Vec3Arr, Mat3>{
     multiplyMat4(mat: Readonly<Mat4>): Vec3 {
         const x = this.x;
         const y = this.y;
-        const z = this.z;
 
-        this.x = x * mat.data[0] + y * mat.data[3] + z * mat.data[6] + mat.data[12];
-        this.y = x * mat.data[1] + y * mat.data[4] + z * mat.data[7] + mat.data[13];
-        this.z = x * mat.data[2] + y * mat.data[5] + z * mat.data[8] + mat.data[14];
+        this.x = x * mat.data[0] + y * mat.data[4] + this.z * mat.data[8] + mat.data[12];
+        this.y = x * mat.data[1] + y * mat.data[5] + this.z * mat.data[9] + mat.data[13];
+        this.z = x * mat.data[2] + y * mat.data[6] + this.z * mat.data[10] + mat.data[14];
 
         return this;
-    }
-
-    multiplyScalar(scalar: number): Vec3 {
-        return this.scale(scalar);
     }
 
     divide(vec: Readonly<Vec3>): Vec3 {
@@ -117,11 +115,14 @@ export class Vec3 implements Vec<Vec3, Vec3Obj, Vec3Arr, Mat3>{
     }
 
     cross(vec: Readonly<Vec3>): Vec3 {
-        return new Vec3(
-            this.y * vec.z - this.z * vec.y,
-            this.z * vec.x - this.x * vec.z,
-            this.x * vec.y - this.y * vec.x
-        );
+        const x = this.x;
+        const y = this.y;
+
+        this.x = y * vec.z - this.z * vec.y;
+        this.y = this.z * vec.x - x * vec.z;
+        this.z = x * vec.y - y * vec.x
+
+        return this;
     }
 
     lengthNoSqrt(): number {
@@ -222,18 +223,15 @@ export class Vec3 implements Vec<Vec3, Vec3Obj, Vec3Arr, Mat3>{
         );
     }
 
-    distanceTo(vec: Readonly<Vec3>): number {
-        const dx = this.x - vec.x;
-        const dy = this.y - vec.y;
-        const dz = this.z - vec.z;
-        return Math.sqrt(dx * dx + dy * dy + dz * dz);
-    }
-
     distanceNoSqrt(vec: Readonly<Vec3>): number {
         const dx = this.x - vec.x;
         const dy = this.y - vec.y;
         const dz = this.z - vec.z;
         return dx * dx + dy * dy + dz * dz;
+    }
+
+    distanceTo(vec: Readonly<Vec3>): number {
+        return Math.sqrt(this.distanceNoSqrt(vec));
     }
 
     randomize(lb: Readonly<Vec3>, ub: Readonly<Vec3>): Vec3 {
@@ -269,7 +267,7 @@ export class Vec3 implements Vec<Vec3, Vec3Obj, Vec3Arr, Mat3>{
         return this;
     }
 
-    map<T>(callback: (x: number, y: number, z: number) => T): T {
-        return callback(this.x, this.y, this.z);
+    map<T>(callback: (vec: Readonly<Vec3>) => T): T {
+        return callback(this);
     }
 }

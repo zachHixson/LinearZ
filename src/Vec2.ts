@@ -63,28 +63,26 @@ export class Vec2 implements Vec<Vec2, Vec2Obj, Vec2Arr, Mat3> {
         return this;
     }
 
+    multiplyScalar(scalar: number): Vec2 {
+        return this.scale(scalar);
+    }
+
     multiplyMat3(mat: Readonly<Mat3>): Vec2 {
         const x = this.x;
-        const y = this.y;
 
-        this.x = x * mat.data[0] + y * mat.data[3] + mat.data[6];
-        this.y = x * mat.data[1] + y * mat.data[4] + mat.data[7];
+        this.x = x * mat.data[0] + this.y * mat.data[3] + mat.data[6];
+        this.y = x * mat.data[1] + this.y * mat.data[4] + mat.data[7];
 
         return this;
     }
 
     multiplyMat4(mat: Readonly<Mat4>): Vec2 {
         const x = this.x;
-        const y = this.y;
 
-        this.x = x * mat.data[0] + y * mat.data[4] + mat.data[8] + mat.data[12];
-        this.y = x * mat.data[1] + y * mat.data[5] + mat.data[9] + mat.data[13];
+        this.x = x * mat.data[0] + this.y * mat.data[4] + mat.data[8] + mat.data[12];
+        this.y = x * mat.data[1] + this.y * mat.data[5] + mat.data[9] + mat.data[13];
 
         return this;
-    }
-
-    multiplyScalar(scalar: number): Vec2 {
-        return this.scale(scalar);
     }
 
     divide(vec: Readonly<Vec2>): Vec2 {
@@ -142,8 +140,8 @@ export class Vec2 implements Vec<Vec2, Vec2Obj, Vec2Arr, Mat3> {
     }
 
     fromArray(arr: Readonly<Vec2Arr>): Vec2 {
-        this.x = arr[0] ?? 0;
-        this.y = arr[1] ?? 0;
+        this.x = arr[0];
+        this.y = arr[1];
         return this;
     }
 
@@ -192,23 +190,25 @@ export class Vec2 implements Vec<Vec2, Vec2Obj, Vec2Arr, Mat3> {
         );
     }
 
-    distanceTo(vec: Readonly<Vec2>): number {
-        const dx = this.x - vec.x;
-        const dy = this.y - vec.y;
-        return Math.sqrt(dx * dx + dy * dy);
-    }
-
     distanceNoSqrt(vec: Readonly<Vec2>): number {
         const dx = this.x - vec.x;
         const dy = this.y - vec.y;
         return dx * dx + dy * dy;
     }
 
+    distanceTo(vec: Readonly<Vec2>): number {
+        return Math.sqrt(this.distanceNoSqrt(vec));
+    }
+
     randomize(lb: Readonly<Vec2>, ub: Readonly<Vec2>): Vec2 {
-        const dx = ub.x - lb.x;
-        const dy = ub.y - lb.y;
-        this.x = Math.random() * dx + lb.x;
-        this.y = Math.random() * dy + lb.y;
+        const lbx = Math.min(lb.x, ub.x);
+        const lby = Math.min(lb.y, ub.y);
+        const ubx = Math.max(lb.x, ub.x);
+        const uby = Math.max(lb.y, ub.y);
+        const dx = ubx - lbx;
+        const dy = uby - lby;
+        this.x = Math.random() * dx + lbx;
+        this.y = Math.random() * dy + lby;
         return this;
     }
 
@@ -234,7 +234,7 @@ export class Vec2 implements Vec<Vec2, Vec2Obj, Vec2Arr, Mat3> {
         return this;
     }
 
-    map<T>(callback: (x: number, y: number) => T): T {
-        return callback(this.x, this.y);
+    map<T>(callback: (vec: Readonly<Vec2>) => T): T {
+        return callback(this);
     }
 }

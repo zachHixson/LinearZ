@@ -1,5 +1,5 @@
 import { fileURLToPath } from "url";
-import { createTester, EQUAL, NOT_EQUAL, EXPECT_THROW } from "./Testing.js";
+import { createTester, EXISTS, EQUAL, NOT_EQUAL, EXPECT_THROW } from "./Testing.js";
 import { MAT_EQUAL } from "../test/Mat_helpers.js";
 import { Mat3 } from "../src/Mat3.js";
 
@@ -15,21 +15,25 @@ TEST("Mat3.WIDTH", ()=>{
 
 TEST("New() Empty", ()=>{
     const mat = new Mat3();
+    EXISTS(mat);
     MAT_EQUAL(mat.data, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
 });
 
 TEST("New() Full", ()=>{
     const mat = new Mat3([11, 2, 3, 4, 5, 6, 7, 8, 9]);
+    EXISTS(mat);
     MAT_EQUAL(mat.data, [11, 2, 3, 4, 5, 6, 7, 8, 9]);
 });
 
 TEST("New() Short", ()=>{
     const mat = new Mat3([11, 12, 13]);
+    EXISTS(mat);
     MAT_EQUAL(mat.data, [11, 12, 13, 0, 1, 0, 0, 0, 1]);
 });
 
 TEST("New() Long", ()=>{
     const mat = new Mat3([-5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+    EXISTS(mat);
     MAT_EQUAL(mat.data, [-5, 2, 3, 4, 5, 6, 7, 8, 9]);
 });
 

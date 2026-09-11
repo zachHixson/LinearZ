@@ -48,12 +48,26 @@ export function runBatch(arr: Array<()=>boolean>): boolean {
         if (!res) return false;
     }
 
-    console.log('=== All Tests Have Completed ===');
+    console.log("=== All Tests Have Completed ===");
     return true;
+}
+
+export function EXISTS<T>(val: T): void {
+    if (val == null || val == undefined || val == (NaN as any)) {
+        throw new Error("Value does not exist.");
+    }
 }
 
 export function EQUAL<T>(a: T, b: T): void {
     if (a != b) {
+        throw new Error(`Values not equal.\n\tValues: a = ${a}, b = ${b}`);
+    }
+};
+
+export function EQUAL_SOFT(a: number, b: number, precision: number): void {
+    const range = Math.pow(10, -precision);
+    const diff = b - a;
+    if (Math.abs(diff) > range) {
         throw new Error(`Values not equal.\n\tValues: a = ${a}, b = ${b}`);
     }
 };
