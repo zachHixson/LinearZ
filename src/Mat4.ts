@@ -7,6 +7,7 @@ type Mat4Data = [
     number, number, number, number,
 ];
 
+/** @inheritdoc */
 export class Mat4 implements Mat<Mat4, Mat4Data> {
     static readonly LENGTH = 16;
     static readonly WIDTH = 4;

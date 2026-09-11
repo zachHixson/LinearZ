@@ -1,16 +1,17 @@
 import { type Mat } from "./Mat.js";
 
-type Mat3Data = [
+type Mat3Array = [
     number, number, number,
     number, number, number,
     number, number, number,
 ];
 
-export class Mat3 implements Mat<Mat3, Mat3Data> {
+/** @inheritdoc */
+export class Mat3 implements Mat<Mat3, Mat3Array> {
     static readonly LENGTH = 9;
     static readonly WIDTH = 3;
 
-    private _data: Mat3Data = [
+    private _data: Mat3Array = [
         1, 0, 0,
         0, 1, 0,
         0, 0, 1,
@@ -19,7 +20,7 @@ export class Mat3 implements Mat<Mat3, Mat3Data> {
     constructor(data?: Readonly<Array<number>>){
         if (!data) return;
         if (data.length == this._data.length) {
-            this.set(data as Mat3Data);
+            this.set(data as Mat3Array);
         }
         else {
             this.safeSet(data);
@@ -39,7 +40,7 @@ export class Mat3 implements Mat<Mat3, Mat3Data> {
         return this;
     }
 
-    set(data: Readonly<Mat3Data>): Mat3 {
+    set(data: Readonly<Mat3Array>): Mat3 {
         this._data[0] = data[0];
         this._data[1] = data[1];
         this._data[2] = data[2];

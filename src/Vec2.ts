@@ -6,7 +6,8 @@ import { type Mat4 } from "./Mat4.js";
 type Vec2Obj = {x: number, y: number};
 type Vec2Arr = [number, number];
 
-export class Vec2 implements Vec<Vec2, Vec2Obj, Vec2Arr, Mat3> {
+/** @inheritdoc */
+export class Vec2 implements Vec<Vec2, Vec2Obj, Vec2Arr> {
     static readonly WIDTH = 2;
 
     static fromArray(arr: Readonly<Vec2Arr>): Vec2 {
@@ -101,6 +102,11 @@ export class Vec2 implements Vec<Vec2, Vec2Obj, Vec2Arr, Mat3> {
         return this.x * vec.x + this.y * vec.y;
     }
 
+    /**
+     * Calculates cross product of two vectors
+     * @param vec Second vector to cross with current vector
+     * @returns Number representing Z component of the resulting vector
+     */
     cross(vec: Readonly<Vec2>): number {
         return this.x * vec.y - this.y * vec.x;
     }
@@ -129,6 +135,11 @@ export class Vec2 implements Vec<Vec2, Vec2Obj, Vec2Arr, Mat3> {
         return this;
     }
 
+    /**
+     * @param x X component
+     * @param y Y Component
+     * @returns Reference to self
+     */
     set(x: number, y: number): Vec2 {
         this.x = x;
         this.y = y;

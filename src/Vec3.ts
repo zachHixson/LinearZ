@@ -5,7 +5,8 @@ import { type Mat4 } from "./Mat4.js";
 type Vec3Obj = {x: number, y: number, z: number};
 type Vec3Arr = [number, number, number];
 
-export class Vec3 implements Vec<Vec3, Vec3Obj, Vec3Arr, Mat3>{
+/** @inheritdoc */
+export class Vec3 implements Vec<Vec3, Vec3Obj, Vec3Arr>{
     static readonly WIDTH = 3;
 
     static fromArray(arr: Readonly<Vec3Arr>): Vec3 {
@@ -114,6 +115,11 @@ export class Vec3 implements Vec<Vec3, Vec3Obj, Vec3Arr, Mat3>{
         return this.x * vec.x + this.y * vec.y + this.z * vec.z;
     }
 
+    /**
+     * Sets the current vector to the cross product of the current vector and the provided vector
+     * @param vec Second vector to cross with current vector
+     * @returns Reference to self
+     */
     cross(vec: Readonly<Vec3>): Vec3 {
         const x = this.x;
         const y = this.y;
@@ -150,6 +156,12 @@ export class Vec3 implements Vec<Vec3, Vec3Obj, Vec3Arr, Mat3>{
         return this;
     }
 
+    /**
+     * @param x X component
+     * @param y Y Component
+     * @param z Z component
+     * @returns Reference to self
+     */
     set(x: number, y: number, z: number): Vec3 {
         this.x = x;
         this.y = y;

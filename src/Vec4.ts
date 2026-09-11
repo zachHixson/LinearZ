@@ -5,7 +5,8 @@ import { type Mat4 } from "./Mat4.js";
 type Vec4Obj = {x: number, y: number, z: number, w: number};
 type Vec4Arr = [number, number, number, number];
 
-export class Vec4 implements Vec<Vec4, Vec4Obj, Vec4Arr, Mat3>{
+/** @inheritdoc */
+export class Vec4 implements Vec<Vec4, Vec4Obj, Vec4Arr>{
     static readonly WIDTH = 4;
 
     static fromArray(arr: Readonly<Vec4Arr>): Vec4 {
@@ -152,6 +153,13 @@ export class Vec4 implements Vec<Vec4, Vec4Obj, Vec4Arr, Mat3>{
         return this;
     }
 
+    /**
+     * @param x X component
+     * @param y Y Component
+     * @param z Z component
+     * @param w W component
+     * @returns Reference to self
+     */
     set(x: number, y: number, z: number, w: number): Vec4 {
         this.x = x;
         this.y = y;
