@@ -1,5 +1,5 @@
-import "./Mat3.ts";
-import "./Mat4.ts";
-import "./Vec2.ts";
-import "./Vec3.ts";
-import "./Vec4.ts";
+export * from "./Mat3.js";
+export * from "./Mat4.js";
+export * from "./Vec2.js";
+export * from "./Vec3.js";
+export * from "./Vec4.js";

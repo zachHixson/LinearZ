@@ -1,7 +1,7 @@
 {
   "name": "linearz",
   "version": "1.0.0",
-  "description": "A simple, fast, Vector and Matrix library",
+  "description": "A simple, fast, Vector and Matrix library for Typescript",
   "keywords": [
     "linear",
     "algebra",
@@ -20,9 +20,8 @@
   "author": "Zach Hixson",
   "type": "module",
   "main": "dist/index.js",
-
   "files": [
-      "dist/src"
+      "dist/"
   ],
   "scripts": {
     "test": "tsx test/All_Tests.ts",
