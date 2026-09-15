@@ -57,6 +57,8 @@ const result = vec.multiplyMat3(mat); // result: { x: 42, y: 51, z: 60 };
 
 ## Vector API
 
+Applies to `Vec2`, `Vec3`, and `Vec4` classes
+
 - `.x` - X component of current vector
 - `.y` - Y component of current vector
 - `.z` - Z component of current vector (Vec3 and Vec4 only)
@@ -103,6 +105,8 @@ const result = vec.multiplyMat3(mat); // result: { x: 42, y: 51, z: 60 };
 - `.map<T>(callback)` - Allows transforming vector into another type via user provided callback (useful when chaining operations)
 
 ## Matrix API
+
+Applies to `Mat3` and `Mat4` classes
 
 - `.data` - A linear array of all matrix components
 - `.width` - Width of current matrix
