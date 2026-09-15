@@ -174,7 +174,7 @@ export class Vec3 implements Vec<Vec3>{
         );
     }
 
-    fromArray(arr: Readonly<Array<number>>): Vec3 {
+    copyArray(arr: Readonly<Array<number>>): Vec3 {
         this.x = arr[0] ?? 0;
         this.y = arr[1] ?? 0;
         this.z = arr[2] ?? 0;
@@ -185,7 +185,7 @@ export class Vec3 implements Vec<Vec3>{
         return [this.x, this.y, this.z];
     }
 
-    fromObject(obj: Readonly<{x?: number, y?: number, z?: number}>): Vec3 {
+    copyObject(obj: Readonly<{x?: number, y?: number, z?: number}>): Vec3 {
         this.x = obj.x ?? 0;
         this.y = obj.y ?? 0;
         this.z = obj.z ?? 0;

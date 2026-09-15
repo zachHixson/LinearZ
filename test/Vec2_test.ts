@@ -25,14 +25,54 @@ TEST("New() Full", ()=>{
     VEC_EQUAL(vec, [2, 3]);
 });
 
-TEST("Vec2.fromArray", ()=>{
+TEST("Vec2.fromArray() empty", ()=>{
+    const vec = Vec2.fromArray([]);
+    EXISTS(vec);
+    VEC_EQUAL(vec, [0, 0]);
+});
+
+TEST("Vec2.fromArray() partial", ()=>{
+    const vec = Vec2.fromArray([1]);
+    EXISTS(vec);
+    VEC_EQUAL(vec, [1, 0]);
+});
+
+TEST("Vec2.fromArray() full", ()=>{
     const vec = Vec2.fromArray([2, 3]);
     EXISTS(vec);
     VEC_EQUAL(vec, [2, 3]);
 });
 
-TEST("Vec2.fromObject", ()=>{
+TEST("Vec2.fromArray() overfull", ()=>{
+    const vec = Vec2.fromArray([2, 3, 4, 5, 6]);
+    EXISTS(vec);
+    VEC_EQUAL(vec, [2, 3]);
+});
+
+TEST("Vec2.fromObject() empty", ()=>{
+    const vec = Vec2.fromObject({});
+    EXISTS(vec);
+    VEC_EQUAL(vec, [0, 0]);
+});
+
+TEST("Vec2.fromObject() partial", ()=>{
+    const vecX = Vec2.fromObject({x: 1});
+    const vecY = Vec2.fromObject({y: 1});
+    EXISTS(vecX);
+    EXISTS(vecY);
+    VEC_EQUAL(vecX, [1, 0]);
+    VEC_EQUAL(vecY, [0, 1]);
+});
+
+TEST("Vec2.fromObject() full", ()=>{
     const vec = Vec2.fromObject({x: 2, y: 3});
+    EXISTS(vec);
+    VEC_EQUAL(vec, [2, 3]);
+});
+
+TEST("Vec2.fromObject() overfull", ()=>{
+    const obj = {x: 2, y: 3, randomProp: "hello"};
+    const vec = Vec2.fromObject(obj);
     EXISTS(vec);
     VEC_EQUAL(vec, [2, 3]);
 });
@@ -225,9 +265,33 @@ TEST("clone()", ()=>{
     VEC_EQUAL(vec, [10, 11]);
 });
 
-TEST("fromArray()", ()=>{
+TEST("copyArray() empty", ()=>{
     const vec = new Vec2();
-    const res = vec.fromArray([1, 2]);
+    const res = vec.copyArray([]);
+    EXISTS(res);
+    EQUAL(vec, res);
+    VEC_EQUAL(res, [0, 0]);
+});
+
+TEST("copyArray() partial", ()=>{
+    const vec = new Vec2();
+    const res = vec.copyArray([1]);
+    EXISTS(res);
+    EQUAL(vec, res);
+    VEC_EQUAL(res, [1, 0]);
+});
+
+TEST("fromArray() full", ()=>{
+    const vec = new Vec2();
+    const res = vec.copyArray([1, 2]);
+    EXISTS(res);
+    EQUAL(vec, res);
+    VEC_EQUAL(res, [1, 2]);
+});
+
+TEST("copyArray() overFull", ()=>{
+    const vec = new Vec2();
+    const res = vec.copyArray([1, 2, 3, 4, 5, 6]);
     EXISTS(res);
     EQUAL(vec, res);
     VEC_EQUAL(res, [1, 2]);
@@ -241,11 +305,36 @@ TEST("toArray()", ()=>{
     EQUAL(res[1], 3);
 });
 
-TEST("fromObject()", ()=>{
+TEST("copyObject() empty", ()=>{
     const vec = new Vec2();
-    const res = vec.fromObject({x: 2, y: 3});
+    const res = vec.copyObject({});
+    EXISTS(res);
+    VEC_EQUAL(res, [0, 0]);
+});
+
+TEST("copyObject() partial", ()=>{
+    const vecX = new Vec2().copyObject({x: 1});
+    const vecY = new Vec2().copyObject({y: 1});
+    EXISTS(vecX);
+    EXISTS(vecY);
+    VEC_EQUAL(vecX, [1, 0]);
+    VEC_EQUAL(vecY, [0, 1]);
+});
+
+TEST("copyObject() full", ()=>{
+    const vec = new Vec2();
+    const res = vec.copyObject({x: 2, y: 3});
     EXISTS(res);
     VEC_EQUAL(res, [2, 3]);
+});
+
+TEST("copyObject() overfull", ()=>{
+    const vec = new Vec2();
+    const obj = {x: 2, y: 3, randomProp: "hello"};
+    const res = vec.copyObject(obj);
+    EXISTS(res);
+    VEC_EQUAL(res, [2, 3]);
+    EQUAL((res as any)["randomProp"] == undefined, true);
 });
 
 TEST("toObject()", ()=>{

@@ -139,7 +139,7 @@ export interface Vec<VecT> {
      * Copies elements of provided array into the components of the current vector
      * @param arr Array with size matching Vec.data to copy components from
      */
-    fromArray(arr: Readonly<Array<number>>): VecT;
+    copyArray(arr: Readonly<Array<number>>): VecT;
 
     /**
      * Creates new array from components of current vector
@@ -151,7 +151,7 @@ export interface Vec<VecT> {
      * Copies components of provided vector-like object into the components of the current vector
      * @param obj Vector-like object to copy components from
      */
-    fromObject(obj: Readonly<{x?: number, y?: number, z?: number, w?: number}>): VecT;
+    copyObject(obj: Readonly<{x?: number, y?: number, z?: number, w?: number}>): VecT;
 
     /**
      * Creates new object from components of current vector

@@ -146,7 +146,7 @@ export class Vec2 implements Vec<Vec2> {
         return new Vec2(this.x, this.y);
     }
 
-    fromArray(arr: Readonly<Array<number>>): Vec2 {
+    copyArray(arr: Readonly<Array<number>>): Vec2 {
         this.x = arr[0] ?? 0;
         this.y = arr[1] ?? 0;
         return this;
@@ -156,7 +156,7 @@ export class Vec2 implements Vec<Vec2> {
         return [this.x, this.y];
     }
 
-    fromObject(obj: Readonly<{x?: number, y?: number}>): Vec2 {
+    copyObject(obj: Readonly<{x?: number, y?: number}>): Vec2 {
         this.x = obj.x ?? 0;
         this.y = obj.y ?? 0;
         return this;
