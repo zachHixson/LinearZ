@@ -1,7 +1,7 @@
 import { type Mat3 } from "./Mat3.js";
 import { type Mat4 } from "./Mat4.js";
 
-export interface Vec<VecT, ObjT, ArrT> {
+export interface Vec<VecT> {
     /**
      * @returns Width (dimension) of current vector
      */
@@ -29,6 +29,13 @@ export interface Vec<VecT, ObjT, ArrT> {
     subtract(vec: Readonly<VecT>): VecT;
 
     /**
+     * Subtracts scalar value from all components of current vector
+     * @param scalar Scalar value to be subtracted
+     * @return Reference to self
+     */
+    subtractScalar(scalar: number): VecT;
+
+    /**
      * Multiplies current vector by a provided vector (component-wise)
      * @param vec Vector to be multiplied
      * @return Reference to self
@@ -50,9 +57,9 @@ export interface Vec<VecT, ObjT, ArrT> {
     multiplyScalar(scalar: number): VecT;
 
     /**
-     * Multiplies current vector by Mat3.
+     * Multiplies current vector by Mat3
      *
-     * If the size doesn't match, extra components will be treated as identity matrix.
+     * If the size doesn't match, extra components will be treated as identity matrix
      *
      * @param mat
      * @return Reference to self
@@ -60,9 +67,9 @@ export interface Vec<VecT, ObjT, ArrT> {
     multiplyMat3(mat: Readonly<Mat3>): VecT;
 
     /**
-     * Multiplies current vector by Mat4.
+     * Multiplies current vector by Mat4
      *
-     * If the size doesn't match, extra components will be treated as identity matrix.
+     * If the size doesn't match, extra components will be treated as identity matrix
      *
      * @param mat
      * @return Reference to self
@@ -96,6 +103,11 @@ export interface Vec<VecT, ObjT, ArrT> {
     lengthNoSqrt(): number;
 
     /**
+     * @return Length of vector
+     */
+    length(): number;
+
+    /**
      * @return Magnitude of current vector
      */
     magnitude(): number;
@@ -127,25 +139,25 @@ export interface Vec<VecT, ObjT, ArrT> {
      * Copies elements of provided array into the components of the current vector
      * @param arr Array with size matching Vec.data to copy components from
      */
-    fromArray(arr: Readonly<ArrT>): VecT;
+    fromArray(arr: Readonly<Array<number>>): VecT;
 
     /**
      * Creates new array from components of current vector
      * @return New array with elements matching components of current vector
      */
-    toArray(): ArrT;
+    toArray(): Array<number>;
 
     /**
      * Copies components of provided vector-like object into the components of the current vector
      * @param obj Vector-like object to copy components from
      */
-    fromObject(obj: Readonly<ObjT>): VecT;
+    fromObject(obj: Readonly<{x?: number, y?: number, z?: number, w?: number}>): VecT;
 
     /**
      * Creates new object from components of current vector
      * @return New object with components matching components of current vector
      */
-    toObject(): ObjT;
+    toObject(): unknown;
 
     /**
      * Floors (force rounds down) all components of current vector
@@ -200,7 +212,7 @@ export interface Vec<VecT, ObjT, ArrT> {
     zero(): VecT;
 
     /**
-     * Clamps the current vector to the provided length.
+     * Clamps the current vector to the provided length
      *
      * Vectors smaller than provided length will not be modified
      * @param maxLength Max length of vector

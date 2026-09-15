@@ -57,7 +57,7 @@ export interface Mat<MatT, DataT> {
     transpose(): MatT;
 
     /**
-     * Calculates inverse of current matrix
+     * Sets the current matrix to its inverse
      * @return Reference to self
      */
     inverse(): MatT;

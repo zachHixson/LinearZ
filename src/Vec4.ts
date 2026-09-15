@@ -2,18 +2,15 @@ import { type Vec } from "./Vec.js";
 import { type Mat3 } from "./Mat3.js";
 import { type Mat4 } from "./Mat4.js";
 
-type Vec4Obj = {x: number, y: number, z: number, w: number};
-type Vec4Arr = [number, number, number, number];
-
 /** @inheritdoc */
-export class Vec4 implements Vec<Vec4, Vec4Obj, Vec4Arr>{
+export class Vec4 implements Vec<Vec4>{
     static readonly WIDTH = 4;
 
-    static fromArray(arr: Readonly<Vec4Arr>): Vec4 {
+    static fromArray(arr: Readonly<Array<number>>): Vec4 {
         return new Vec4(arr[0], arr[1], arr[2], arr[3]);
     }
 
-    static fromObject(obj: Readonly<Vec4Obj>): Vec4 {
+    static fromObject(obj: Readonly<{x?: number, y?: number, z?: number, w?: number}>): Vec4 {
         return new Vec4(obj.x, obj.y, obj.z, obj.w);
     }
 
@@ -145,7 +142,7 @@ export class Vec4 implements Vec<Vec4, Vec4Obj, Vec4Arr>{
         return this.scale(1/length);
     }
 
-    copy(vec: Readonly<Vec4Obj>): Vec4 {
+    copy(vec: Readonly<{x: number, y: number, z: number, w: number}>): Vec4 {
         this.x = vec.x;
         this.y = vec.y;
         this.z = vec.z;
@@ -177,27 +174,27 @@ export class Vec4 implements Vec<Vec4, Vec4Obj, Vec4Arr>{
         );
     }
 
-    fromArray(arr: Readonly<Vec4Arr>): Vec4 {
-        this.x = arr[0];
-        this.y = arr[1];
-        this.z = arr[2];
-        this.w = arr[3];
+    fromArray(arr: Readonly<Array<number>>): Vec4 {
+        this.x = arr[0] ?? 0;
+        this.y = arr[1] ?? 0;
+        this.z = arr[2] ?? 0;
+        this.w = arr[3] ?? 0;
         return this;
     }
 
-    toArray(): Vec4Arr {
+    toArray(): [number, number, number, number] {
         return [this.x, this.y, this.z, this.w];
     }
 
-    fromObject(obj: Readonly<Vec4Obj>): Vec4 {
-        this.x = obj.x;
-        this.y = obj.y;
-        this.z = obj.z;
-        this.w = obj.w;
+    fromObject(obj: Readonly<{x?: number, y?: number, z?: number, w?: number}>): Vec4 {
+        this.x = obj.x ?? 0;
+        this.y = obj.y ?? 0;
+        this.z = obj.z ?? 0;
+        this.w = obj.w ?? 0;
         return this;
     }
 
-    toObject(): Vec4Obj {
+    toObject(): {x: number, y: number, z: number, w: number} {
         return {x: this.x, y: this.y, z: this.z, w: this.w};
     }
 

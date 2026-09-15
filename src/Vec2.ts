@@ -2,19 +2,15 @@ import { type Vec } from "./Vec.js";
 import { type Mat3 } from "./Mat3.js";
 import { type Mat4 } from "./Mat4.js";
 
-
-type Vec2Obj = {x: number, y: number};
-type Vec2Arr = [number, number];
-
 /** @inheritdoc */
-export class Vec2 implements Vec<Vec2, Vec2Obj, Vec2Arr> {
+export class Vec2 implements Vec<Vec2> {
     static readonly WIDTH = 2;
 
-    static fromArray(arr: Readonly<Vec2Arr>): Vec2 {
+    static fromArray(arr: Readonly<Array<number>>): Vec2 {
         return new Vec2(arr[0], arr[1]);
     }
 
-    static fromObject(obj: Readonly<Vec2Obj>): Vec2 {
+    static fromObject(obj: Readonly<{x?: number, y?: number}>): Vec2 {
         return new Vec2(obj.x, obj.y);
     }
 
@@ -129,7 +125,7 @@ export class Vec2 implements Vec<Vec2, Vec2Obj, Vec2Arr> {
         return this.scale(1/length);
     }
 
-    copy(vec: Readonly<Vec2Obj>): Vec2 {
+    copy(vec: Readonly<{x: number, y: number}>): Vec2 {
         this.x = vec.x;
         this.y = vec.y;
         return this;
@@ -150,23 +146,23 @@ export class Vec2 implements Vec<Vec2, Vec2Obj, Vec2Arr> {
         return new Vec2(this.x, this.y);
     }
 
-    fromArray(arr: Readonly<Vec2Arr>): Vec2 {
-        this.x = arr[0];
-        this.y = arr[1];
+    fromArray(arr: Readonly<Array<number>>): Vec2 {
+        this.x = arr[0] ?? 0;
+        this.y = arr[1] ?? 0;
         return this;
     }
 
-    toArray(): Vec2Arr {
+    toArray(): [number, number] {
         return [this.x, this.y];
     }
 
-    fromObject(obj: Readonly<Vec2Obj>): Vec2 {
-        this.x = obj.x;
-        this.y = obj.y;
+    fromObject(obj: Readonly<{x?: number, y?: number}>): Vec2 {
+        this.x = obj.x ?? 0;
+        this.y = obj.y ?? 0;
         return this;
     }
 
-    toObject(): Vec2Obj {
+    toObject(): {x: number, y: number} {
         return {x: this.x, y: this.y};
     }
 
